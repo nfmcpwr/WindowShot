@@ -1,0 +1,14 @@
+﻿global using WPARAM = System.UIntPtr;
+global using LPARAM = System.IntPtr;
+global using LRESULT = System.IntPtr;
+global using HHOOK = System.IntPtr;
+global using HINSTANCE = System.IntPtr;
+global using HOOKPROC = System.IntPtr;
+global using DWORD = uint;
+global using LPCSTR = string;
+global using HMODULE = System.IntPtr;
+global using HWND = System.IntPtr;
+global using HDC = System.IntPtr;
+global using HBITMAP = System.IntPtr;
+global using HGDIOBJ = System.IntPtr;
+global using HMONITOR = System.IntPtr;

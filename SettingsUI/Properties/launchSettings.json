@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SettingsUI (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "SettingsUI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

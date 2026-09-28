@@ -1,8 +1,9 @@
+using System.Diagnostics;
 using System.IO.Pipes;
 using System.Text;
 using WindowShot.Shared;
 
-namespace Tray
+namespace WindowShot.Tray
 {
     public partial class Tray : Form
     {
@@ -19,6 +20,11 @@ namespace Tray
 
         private async Task CheckStatus()
         {
+            if (Process.GetProcessesByName("WindowShotService").Length == 0)
+            {
+                goto Skip;
+            }
+
             NamedPipeClientStream client = new NamedPipeClientStream("WindowShot");
 
             try
@@ -43,7 +49,7 @@ namespace Tray
             }
             else
             {
-                MessageBox.Show("Failed to connect WindowShot service", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("CheckStatus error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             client.Close();
@@ -59,6 +65,8 @@ namespace Tray
                     this.modeWindow.Checked = true;
                     break;
             }
+
+            Skip:
 
             this.captureMode.Enabled = this._ServiceStatus;
             this.statusText.Text += this._ServiceStatus ? "Running" : "Stopped";
@@ -80,6 +88,10 @@ namespace Tray
             {
                 byte[] buffer = Encoding.UTF8.GetBytes($"Set{this._Mode.ToString()}Mode");
                 await client.WriteAsync(buffer, 0, buffer.Length);
+            }
+            else
+            {
+                MessageBox.Show("UpdateMode error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             client.Close();

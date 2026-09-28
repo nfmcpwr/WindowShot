@@ -2,9 +2,9 @@
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using WindowShot.Shared;
-using WindowShotService.Interop;
+using WindowShot.Service.Interop;
 
-namespace WindowShotService
+namespace WindowShot.Service
 {
     internal static class Capture
     {

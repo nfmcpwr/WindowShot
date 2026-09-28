@@ -2,7 +2,7 @@
 using System.Text;
 using WindowShot.Shared;
 
-namespace WindowShotService
+namespace WindowShot.Service
 {
     internal class IpcServer
     {

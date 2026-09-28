@@ -1,4 +1,4 @@
-namespace WindowShotService
+namespace WindowShot.Service
 {
     public class Program
     {

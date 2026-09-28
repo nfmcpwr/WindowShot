@@ -8,10 +8,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>WSTray</AssemblyName>
     <AssemblyTitle>WSTray</AssemblyTitle>
+    <RootNamespace>WindowShot.Tray</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WindowShot.Shared\WindowShot.Shared.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
 </Project>

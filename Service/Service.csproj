@@ -7,6 +7,9 @@
     <UserSecretsId>dotnet-WindowShotService-e34d2a63-d220-42c0-8ed2-2a98a8992fdb</UserSecretsId>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyName>WindowShotService</AssemblyName>
+    <AssemblyTitle>WindowShotService</AssemblyTitle>
+    <RootNamespace>WindowShot.Service</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WindowShot.Shared\WindowShot.Shared.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 </Project>

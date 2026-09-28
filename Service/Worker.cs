@@ -1,9 +1,9 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using WindowShot.Service.Interop;
 using WindowShot.Shared;
-using WindowShotService.Interop;
 
-namespace WindowShotService
+namespace WindowShot.Service
 {
     internal class Worker : BackgroundService
     {

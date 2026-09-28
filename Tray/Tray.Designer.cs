@@ -1,4 +1,4 @@
-﻿namespace Tray
+﻿namespace WindowShot.Tray
 {
     partial class Tray
     {

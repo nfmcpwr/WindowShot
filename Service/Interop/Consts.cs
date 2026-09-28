@@ -1,4 +1,4 @@
-﻿namespace WindowShotService.Interop
+﻿namespace WindowShot.Service.Interop
 {
     internal class Consts
     {

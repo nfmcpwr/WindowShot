@@ -1,8 +1,8 @@
 ﻿using System.Runtime.InteropServices;
+using WindowShot.Service.Interop;
 using WindowShot.Shared;
-using WindowShotService.Interop;
 
-namespace WindowShotService
+namespace WindowShot.Service
 {
     [UnmanagedFunctionPointer(CallingConvention.Winapi)]
     internal delegate LRESULT KeyboardHookCallback(int code, WPARAM wParam, LPARAM lParam);

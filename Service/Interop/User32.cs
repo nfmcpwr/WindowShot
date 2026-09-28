@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace WindowShotService.Interop
+namespace WindowShot.Service.Interop
 {
     internal class User32
     {

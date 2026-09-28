@@ -2,14 +2,14 @@
   <Project Path="Build/Build.csproj" Id="803b3f36-589f-4076-882b-d723c419cd79">
     <BuildDependency Project="SettingsUI/SettingsUI.csproj" />
     <BuildDependency Project="Tray/Tray.csproj" />
-    <BuildDependency Project="WindowShot.Shared/WindowShot.Shared.csproj" />
-    <BuildDependency Project="WindowShotService/WindowShotService.csproj" />
+    <BuildDependency Project="Shared/Shared.csproj" />
+    <BuildDependency Project="Service/Service.csproj" />
   </Project>
   <Project Path="SettingsUI/SettingsUI.csproj" Id="56807223-5b4a-46f3-bcf3-fb6dab525346">
     <Platform Project="x64" />
     <Deploy />
   </Project>
   <Project Path="Tray/Tray.csproj" Id="4b29ebf2-1775-4ac8-842a-a342fd99c7be" />
-  <Project Path="WindowShot.Shared/WindowShot.Shared.csproj" Id="3e4679e2-ecf5-43bc-9a39-e6354f199833" />
-  <Project Path="WindowShotService/WindowShotService.csproj" Id="7b91e0e3-e9ae-49f4-8a76-f063e191d191" />
+  <Project Path="Shared/Shared.csproj" Id="3e4679e2-ecf5-43bc-9a39-e6354f199833" />
+  <Project Path="Service/Service.csproj" Id="7b91e0e3-e9ae-49f4-8a76-f063e191d191" />
 </Solution>

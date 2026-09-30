@@ -13,5 +13,7 @@
         public const DWORD WM_KEYDOWN = 0x0100;
 
         public const uint PM_REMOVE = 0x0001;
+
+        public const uint PW_CLIENTONLY = 0x00000001;
     }
 }

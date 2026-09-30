@@ -1,15 +1,17 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using WindowShot.Shared;
 using WindowShot.Service.Interop;
+using WindowShot.Shared;
 
 namespace WindowShot.Service
 {
-    internal static class Capture
+    internal static partial class Capture
     {
-        public static bool SaveCapture(CaptureMode mode)
+        public static bool SaveCapture(CaptureMode mode, CaptureMethod method)
         {
+            Log.Info("Service", $"[SaveCapture] Mode: {mode.ToString()}, Method: {method.ToString()}");
+
             Bitmap? result = null;
 
             switch (mode)
@@ -24,20 +26,42 @@ namespace WindowShot.Service
 
                     if (!User32.GetMonitorInfo(hmon, ref info))
                     {
+                        Log.Error("Service", $"GetMonitorInfo error: 0x{Kernel32.GetLastError():X8}");
                         return false;
                     }
 
-                    result = BitBlt(IntPtr.Zero, info.rcMonitor);
+                    switch (method)
+                    {
+                        case CaptureMethod.BitBlt:
+                            result = BitBlt(IntPtr.Zero, info.rcMonitor);
+                            break;
+
+                        case CaptureMethod.PrintWindow:
+                            result = PrintWindow(IntPtr.Zero, info.rcMonitor);
+                            break;
+                    }
+
                     break;
 
                 case CaptureMode.Window:
                     HWND hwnd = User32.GetForegroundWindow();
                     if (!User32.GetClientRect(hwnd, out RECT rect))
                     {
+                        Log.Error("Service", $"GetClientRect error: 0x{Kernel32.GetLastError():X8}");
                         return false;
                     }
 
-                    result = BitBlt(hwnd, rect);
+                    switch (method)
+                    {
+                        case CaptureMethod.BitBlt:
+                            result = BitBlt(hwnd, rect);
+                            break;
+
+                        case CaptureMethod.PrintWindow:
+                            result = PrintWindow(hwnd, rect);
+                            break;
+                    }
+
                     break;
             }
 
@@ -59,74 +83,6 @@ namespace WindowShot.Service
                 ImageFormat.Png);
 
             return true;
-        }
-
-        private static Bitmap? BitBlt(HWND hwnd, RECT targetRect)
-        {
-            HDC hsrcDC = User32.GetDC(hwnd);
-            if (hsrcDC == IntPtr.Zero)
-            {
-                Console.WriteLine("GetDC error: {0:X8}", Kernel32.GetLastError());
-
-                return null;
-            }
-
-            HDC hMemoryDC = Gdi32.CreateCompatibleDC(hsrcDC);
-            if (hMemoryDC == IntPtr.Zero)
-            {
-                Console.WriteLine("CreateCompatibleDC error: {0:X8}", Kernel32.GetLastError());
-
-                User32.ReleaseDC(hwnd, hsrcDC);
-
-                return null;
-            }
-
-            HBITMAP hBitmap = Gdi32.CreateCompatibleBitmap(
-                hsrcDC,
-                targetRect.right - targetRect.left,
-                targetRect.bottom - targetRect.top);
-
-            if (hBitmap == IntPtr.Zero)
-            {
-                Console.WriteLine("CreateCompatibleBitmap error: {0:X8}", Kernel32.GetLastError());
-
-                User32.ReleaseDC(hwnd, hsrcDC);
-                Gdi32.DeleteDC(hMemoryDC);
-
-                return null;
-            }
-
-            HGDIOBJ hPrevObject = Gdi32.SelectObject(hMemoryDC, hBitmap);
-
-            if (!Gdi32.BitBlt(
-                    hMemoryDC,
-                    0,
-                    0,
-                    targetRect.right - targetRect.left,
-                    targetRect.bottom - targetRect.top,
-                    hsrcDC,
-                    targetRect.left,
-                    targetRect.top,
-                    Consts.SRCCOPY))
-            {
-                Console.WriteLine("BitBlt error: {0:X8}", Kernel32.GetLastError());
-
-                Gdi32.SelectObject(hMemoryDC, hPrevObject);
-                Gdi32.DeleteObject(hBitmap);
-                Gdi32.DeleteDC(hMemoryDC);
-                User32.ReleaseDC(hwnd, hsrcDC);
-
-                return null;
-            }
-
-            Bitmap result = Bitmap.FromHbitmap(hBitmap);
-
-            Gdi32.SelectObject(hMemoryDC, hPrevObject);
-            Gdi32.DeleteObject(hBitmap);
-            Gdi32.DeleteDC(hMemoryDC);
-            User32.ReleaseDC(hwnd, hsrcDC);
-
-            return result;
         }
     }
 }

@@ -43,6 +43,7 @@ namespace SettingsUI
             {
                 Log.Warning("SettingsUI", "Load default config");
                 this._Config = Config.DefaultConfig;
+                this._Config.Save(Config.ConfigPath);
             }
 
             foreach (string s in Enum.GetNames<VirtualKeyCode>())
@@ -53,6 +54,7 @@ namespace SettingsUI
             this.Startup.IsOn = this._Config.Startup;
             this.Mode.SelectedIndex = (int)this._Config.CaptureMode;
             this.ShortcutKey.SelectedItem = this._Config.WindowShotKey.ToString();
+            this.Method.SelectedIndex = (int)this._Config.CaptureMethod;
         }
 
         private void Startup_OnToggled(object sender, RoutedEventArgs e)
@@ -69,6 +71,11 @@ namespace SettingsUI
         {
             this._Config!.WindowShotKey = Enum.Parse<VirtualKeyCode>(this.ShortcutKey.SelectedItem.ToString()!);
             this._Config!.ScreenShotKey = Enum.Parse<VirtualKeyCode>(this.ShortcutKey.SelectedItem.ToString()!);
+        }
+
+        private void Method_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this._Config!.CaptureMethod = (CaptureMethod)this.Method.SelectedIndex;
         }
 
         private async void Apply_OnClick(object sender, RoutedEventArgs e)

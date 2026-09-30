@@ -28,6 +28,15 @@
                     <TextBlock x:Uid="ShortcutKeyText" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Margin="10,0,0,0" Foreground="White"></TextBlock>
                     <ComboBox x:Name="ShortcutKey" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" SelectedIndex="-1" SelectionChanged="ShortcutKey_OnSelectionChanged"></ComboBox>
                 </Grid>
+                <Grid Background="#2B2B2B" Height="50" Margin="5,5,5,0" CornerRadius="3">
+                    <TextBlock x:Uid="MethodText" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Margin="10,0,0,0" Foreground="White"></TextBlock>
+                    <ComboBox x:Name="Method" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" SelectedIndex="-1" SelectionChanged="Method_OnSelectionChanged">
+                        <ComboBox.Items>
+                            <ComboBoxItem x:Uid="MethodBitBlt"></ComboBoxItem>
+                            <ComboBoxItem x:Uid="MethodPrintWindow"></ComboBoxItem>
+                        </ComboBox.Items>
+                    </ComboBox>
+                </Grid>
                 <Button x:Name="Apply" x:Uid="ApplyButton" Background="#2B2B2B" HorizontalAlignment="Stretch" Height="50" Margin="5,10,5,0" Click="Apply_OnClick"></Button>
             </StackPanel>
         </ScrollViewer>

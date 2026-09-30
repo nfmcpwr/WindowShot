@@ -8,6 +8,7 @@ namespace WindowShot.Shared
         public CaptureMode    CaptureMode   { get; set; }
         public VirtualKeyCode WindowShotKey { get; set; }
         public VirtualKeyCode ScreenShotKey { get; set; }
+        public CaptureMethod  CaptureMethod { get; set; }
 
         public static readonly string ConfigPath = Path.Combine(Environment.CurrentDirectory, "Config.json");
 
@@ -34,6 +35,7 @@ namespace WindowShot.Shared
             CaptureMode = CaptureMode.Window,
             WindowShotKey = VirtualKeyCode.ImeConvert,
             ScreenShotKey = VirtualKeyCode.ImeConvert,
+            CaptureMethod = CaptureMethod.BitBlt,
         };
     }
 }

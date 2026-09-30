@@ -123,6 +123,15 @@
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="MethodText.Text" xml:space="preserve">
+    <value>Capture method</value>
+  </data>
+  <data name="MethodBitBlt.Content" xml:space="preserve">
+    <value>BitBlt</value>
+  </data>
+  <data name="MethodPrintWindow.Content" xml:space="preserve">
+    <value>PrintWindow</value>
+  </data>
   <data name="ModeScreen.Content" xml:space="preserve">
     <value>Screen</value>
   </data>

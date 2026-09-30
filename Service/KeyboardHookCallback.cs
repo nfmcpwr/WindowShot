@@ -26,7 +26,7 @@ namespace WindowShot.Service
             if (kbd.vkCode == (uint)Worker.Config!.WindowShotKey)
             {
                 Log.Info("Service", "[Callback] Capture key pressed");
-                Capture.SaveCapture(Worker.Config!.CaptureMode);
+                Capture.SaveCapture(Worker.Config!.CaptureMode, Worker.Config!.CaptureMethod);
                 return 1;
             }
 

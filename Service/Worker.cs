@@ -31,6 +31,7 @@ namespace WindowShot.Service
                 Log.Warning("Service", "Load default config");
 
                 Config = Config.DefaultConfig;
+                Config.Save(Path.Combine(Environment.CurrentDirectory, "Config.json"));
             }
         }
 

@@ -1,6 +1,4 @@
-using System.Diagnostics;
-using System.IO.Pipes;
-using System.Text;
+using WindowShot.Resources;
 using WindowShot.Shared;
 
 namespace WindowShot.Tray
@@ -8,52 +6,29 @@ namespace WindowShot.Tray
     public partial class Tray : Form
     {
         private CaptureMode? _Mode;
-        private bool         _ServiceStatus;
 
         public Tray()
         {
             InitializeComponent();
 
-            this._ServiceStatus = false;
             this._Mode = null;
         }
 
         private async Task CheckStatus()
         {
-            if (Process.GetProcessesByName("WindowShotService").Length == 0)
+            if (!IpcClient.IsServiceRunning())
             {
                 goto Skip;
             }
 
-            NamedPipeClientStream client = new NamedPipeClientStream("WindowShot");
-
             try
             {
-                await client.ConnectAsync(5000);
+                this._Mode = await IpcClient.QueryMode();
             }
-            catch (TimeoutException)
+            catch (Exception e)
             {
+                Error.ShowDialog(e);
             }
-
-            if (client.IsConnected)
-            {
-                this._ServiceStatus = true;
-
-                byte[] wbuf = Encoding.UTF8.GetBytes("QueryMode");
-                await client.WriteAsync(wbuf, 0, wbuf.Length);
-
-                byte[] buffer = new byte[128];
-                int count = await client.ReadAsync(buffer, 0, 128);
-
-                this._Mode = Enum.Parse<CaptureMode>(Encoding.UTF8.GetString(buffer, 0, count));
-            }
-            else
-            {
-                MessageBox.Show("CheckStatus error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            client.Close();
-            await client.DisposeAsync();
 
             switch (this._Mode)
             {
@@ -68,35 +43,10 @@ namespace WindowShot.Tray
 
             Skip:
 
-            this.captureMode.Enabled = this._ServiceStatus;
-            this.statusText.Text += this._ServiceStatus ? "Running" : "Stopped";
+            this.captureMode.Enabled = IpcClient.IsServiceRunning();
+            this.statusText.Text = $"{Resource.StatusPrefix}: " + (IpcClient.IsServiceRunning() ? Resource.StatusRunning : Resource.StatusStopped);
         }
 
-        private async Task UpdateMode()
-        {
-            NamedPipeClientStream client = new NamedPipeClientStream("WindowShot");
-
-            try
-            {
-                await client.ConnectAsync(5000);
-            }
-            catch (TimeoutException)
-            {
-            }
-
-            if (client.IsConnected)
-            {
-                byte[] buffer = Encoding.UTF8.GetBytes($"Set{this._Mode.ToString()}Mode");
-                await client.WriteAsync(buffer, 0, buffer.Length);
-            }
-            else
-            {
-                MessageBox.Show("UpdateMode error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            client.Close();
-            await client.DisposeAsync();
-        }
 
         private async void modeWindow_Click(object sender, EventArgs e)
         {
@@ -107,7 +57,14 @@ namespace WindowShot.Tray
 
                 this._Mode = CaptureMode.Window;
 
-                await UpdateMode();
+                try
+                {
+                    await IpcClient.UpdateMode(this._Mode);
+                }
+                catch (Exception ex)
+                {
+                    Error.ShowDialog(ex);
+                }
             }
         }
 
@@ -120,36 +77,30 @@ namespace WindowShot.Tray
 
                 this._Mode = CaptureMode.Screen;
 
-                await UpdateMode();
+                try
+                {
+                    await IpcClient.UpdateMode(this._Mode);
+                }
+                catch (Exception ex)
+                {
+                    Error.ShowDialog(ex);
+                }
             }
         }
 
         private async void exitButton_Click(object sender, EventArgs e)
         {
-            NamedPipeClientStream client = new NamedPipeClientStream("WindowShot");
-
-            try
+            if (IpcClient.IsServiceRunning())
             {
-                await client.ConnectAsync(5000);
+                try
+                {
+                    await IpcClient.StopService();
+                }
+                catch (Exception ex)
+                {
+                    Error.ShowDialog(ex);
+                }
             }
-            catch (TimeoutException)
-            {
-            }
-
-            if (client.IsConnected)
-            {
-                this._ServiceStatus = true;
-
-                byte[] wbuf = Encoding.UTF8.GetBytes("StopService");
-                await client.WriteAsync(wbuf, 0, wbuf.Length);
-            }
-            else
-            {
-                MessageBox.Show("Failed to connect WindowShot service", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            client.Close();
-            await client.DisposeAsync();
 
             Close();
         }
@@ -158,7 +109,14 @@ namespace WindowShot.Tray
         {
             if (e.Button == MouseButtons.Right && this._Mode == null)
             {
-                await CheckStatus();
+                try
+                {
+                    await CheckStatus();
+                }
+                catch (Exception ex)
+                {
+                    Error.ShowDialog(ex);
+                }
             }
         }
     }

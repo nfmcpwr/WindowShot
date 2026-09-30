@@ -1,4 +1,6 @@
-﻿namespace WindowShot.Tray
+﻿using WindowShot.Resources;
+
+namespace WindowShot.Tray
 {
     partial class Tray
     {
@@ -43,11 +45,9 @@
             // trayIcon
             // 
             trayIcon.BalloonTipIcon = ToolTipIcon.Info;
-            trayIcon.BalloonTipText = "text";
-            trayIcon.BalloonTipTitle = "test";
             trayIcon.ContextMenuStrip = trayMenu;
             trayIcon.Icon = (Icon)resources.GetObject("trayIcon.Icon");
-            trayIcon.Text = "notifyIcon1";
+            trayIcon.Text = "WindowShot";
             trayIcon.Visible = true;
             trayIcon.MouseClick += trayIcon_MouseClick;
             // 
@@ -56,13 +56,13 @@
             trayMenu.ImageScalingSize = new Size(24, 24);
             trayMenu.Items.AddRange(new ToolStripItem[] { statusText, captureMode, exitButton });
             trayMenu.Name = "contextMenuStrip1";
-            trayMenu.Size = new Size(143, 100);
+            trayMenu.Size = new Size(241, 133);
             // 
             // statusText
             // 
             statusText.Enabled = false;
             statusText.Name = "statusText";
-            statusText.Size = new Size(142, 32);
+            statusText.Size = new Size(240, 32);
             statusText.Text = "Status: ";
             // 
             // captureMode
@@ -70,28 +70,28 @@
             captureMode.DropDownItems.AddRange(new ToolStripItem[] { modeWindow, modeScreen });
             captureMode.Enabled = false;
             captureMode.Name = "captureMode";
-            captureMode.Size = new Size(142, 32);
-            captureMode.Text = "Mode";
+            captureMode.Size = new Size(240, 32);
+            captureMode.Text = Resource.ModeText;
             // 
             // modeWindow
             // 
             modeWindow.Name = "modeWindow";
-            modeWindow.Size = new Size(180, 34);
-            modeWindow.Text = "Window";
+            modeWindow.Size = new Size(270, 34);
+            modeWindow.Text = Resource.WindowText;
             modeWindow.Click += modeWindow_Click;
             // 
             // modeScreen
             // 
             modeScreen.Name = "modeScreen";
-            modeScreen.Size = new Size(180, 34);
-            modeScreen.Text = "Screen";
+            modeScreen.Size = new Size(270, 34);
+            modeScreen.Text = Resource.ScreenText;
             modeScreen.Click += modeScreen_Click;
             // 
             // exitButton
             // 
             exitButton.Name = "exitButton";
-            exitButton.Size = new Size(142, 32);
-            exitButton.Text = "Exit";
+            exitButton.Size = new Size(240, 32);
+            exitButton.Text = Resource.ExitText;
             exitButton.Click += exitButton_Click;
             // 
             // Tray

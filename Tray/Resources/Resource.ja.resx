@@ -135,6 +135,9 @@
   <data name="ServiceNotRunning" xml:space="preserve">
     <value>サービスが実行されていません</value>
   </data>
+  <data name="SettingsText" xml:space="preserve">
+    <value>設定</value>
+  </data>
   <data name="StatusPrefix" xml:space="preserve">
     <value>状態</value>
   </data>

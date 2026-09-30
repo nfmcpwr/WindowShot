@@ -115,6 +115,15 @@ namespace WindowShot.Resources {
         }
         
         /// <summary>
+        ///   Settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string SettingsText {
+            get {
+                return ResourceManager.GetString("SettingsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Status に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string StatusPrefix {

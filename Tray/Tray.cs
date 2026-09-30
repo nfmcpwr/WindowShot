@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using WindowShot.Resources;
 using WindowShot.Shared;
 
@@ -117,6 +118,18 @@ namespace WindowShot.Tray
                 {
                     Error.ShowDialog(ex);
                 }
+            }
+        }
+
+        private void openSettings_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(Path.Combine(Environment.CurrentDirectory, "WSSettingsUI.exe"));
+            }
+            catch (Exception ex)
+            {
+                Error.ShowDialog(ex);
             }
         }
     }

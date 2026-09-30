@@ -39,6 +39,7 @@ namespace WindowShot.Tray
             modeWindow = new ToolStripMenuItem();
             modeScreen = new ToolStripMenuItem();
             exitButton = new ToolStripMenuItem();
+            openSettings = new ToolStripMenuItem();
             trayMenu.SuspendLayout();
             SuspendLayout();
             // 
@@ -54,9 +55,9 @@ namespace WindowShot.Tray
             // trayMenu
             // 
             trayMenu.ImageScalingSize = new Size(24, 24);
-            trayMenu.Items.AddRange(new ToolStripItem[] { statusText, captureMode, exitButton });
+            trayMenu.Items.AddRange(new ToolStripItem[] { statusText, captureMode, openSettings, exitButton });
             trayMenu.Name = "contextMenuStrip1";
-            trayMenu.Size = new Size(241, 133);
+            trayMenu.Size = new Size(241, 165);
             // 
             // statusText
             // 
@@ -76,14 +77,14 @@ namespace WindowShot.Tray
             // modeWindow
             // 
             modeWindow.Name = "modeWindow";
-            modeWindow.Size = new Size(270, 34);
+            modeWindow.Size = new Size(180, 34);
             modeWindow.Text = Resource.WindowText;
             modeWindow.Click += modeWindow_Click;
             // 
             // modeScreen
             // 
             modeScreen.Name = "modeScreen";
-            modeScreen.Size = new Size(270, 34);
+            modeScreen.Size = new Size(180, 34);
             modeScreen.Text = Resource.ScreenText;
             modeScreen.Click += modeScreen_Click;
             // 
@@ -93,6 +94,13 @@ namespace WindowShot.Tray
             exitButton.Size = new Size(240, 32);
             exitButton.Text = Resource.ExitText;
             exitButton.Click += exitButton_Click;
+            // 
+            // openSettings
+            // 
+            openSettings.Name = "openSettings";
+            openSettings.Size = new Size(240, 32);
+            openSettings.Text = Resource.SettingsText;
+            openSettings.Click += openSettings_Click;
             // 
             // Tray
             // 
@@ -117,5 +125,6 @@ namespace WindowShot.Tray
         private ToolStripMenuItem exitButton;
         private ToolStripMenuItem modeWindow;
         private ToolStripMenuItem modeScreen;
+        private ToolStripMenuItem openSettings;
     }
 }

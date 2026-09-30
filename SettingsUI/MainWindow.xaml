@@ -3,7 +3,6 @@
     x:Class="SettingsUI.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:SettingsUI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -13,11 +12,11 @@
         <ScrollViewer>
             <StackPanel Orientation="Vertical" Margin="0,10,0,0">
                 <Grid Background="#2B2B2B" Height="50" Margin="5,0,5,0" CornerRadius="3">
-                    <TextBlock x:Uid="StartupText" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Margin="10,0,0,0"></TextBlock>
+                    <TextBlock x:Uid="StartupText" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Margin="10,0,0,0" Foreground="White"></TextBlock>
                     <ToggleSwitch x:Name="Startup" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" MinWidth="1" Toggled="Startup_OnToggled"></ToggleSwitch>
                 </Grid>
                 <Grid Background="#2B2B2B" Height="50" Margin="5,5,5,0" CornerRadius="3">
-                    <TextBlock x:Uid="ModeText" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Margin="10,0,0,0">Mode</TextBlock>
+                    <TextBlock x:Uid="ModeText" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Margin="10,0,0,0" Foreground="White"></TextBlock>
                     <ComboBox x:Name="Mode" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" SelectedIndex="-1" SelectionChanged="Mode_OnSelectionChanged">
                         <ComboBox.Items>
                             <ComboBoxItem x:Uid="ModeWindow">Window</ComboBoxItem>
@@ -26,7 +25,7 @@
                     </ComboBox>
                 </Grid>
                 <Grid Background="#2B2B2B" Height="50" Margin="5,5,5,0" CornerRadius="3">
-                    <TextBlock x:Uid="ShortcutKeyText" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Margin="10,0,0,0">Shortcut key</TextBlock>
+                    <TextBlock x:Uid="ShortcutKeyText" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Margin="10,0,0,0" Foreground="White"></TextBlock>
                     <ComboBox x:Name="ShortcutKey" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" SelectedIndex="-1" SelectionChanged="ShortcutKey_OnSelectionChanged"></ComboBox>
                 </Grid>
                 <Button x:Name="Apply" x:Uid="ApplyButton" Background="#2B2B2B" HorizontalAlignment="Stretch" Height="50" Margin="5,10,5,0" Click="Apply_OnClick"></Button>

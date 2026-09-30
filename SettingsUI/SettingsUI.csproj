@@ -69,5 +69,6 @@
     <AssemblyName>WSSettingsUI</AssemblyName>
     <AssemblyTitle>WSSettingsUI</AssemblyTitle>
 	<SelfContained>false</SelfContained>
+	<DefaultLanguage>en-US</DefaultLanguage>
   </PropertyGroup>
 </Project>

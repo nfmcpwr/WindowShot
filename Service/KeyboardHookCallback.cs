@@ -19,14 +19,13 @@ namespace WindowShot.Service
             KBDLLHOOKSTRUCT? kbd = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(lParam);
             if (kbd == null)
             {
-                Console.WriteLine("lParam null");
+                Log.Warning("Service", "[Callback] lParam null");
                 return User32.CallNextHookEx(IntPtr.Zero, code, wParam, lParam);
             }
 
-            Console.WriteLine($"[Callback] Key code: {(VirtualKeyCode)kbd.vkCode}");
-
             if (kbd.vkCode == (uint)Worker.Config!.WindowShotKey)
             {
+                Log.Info("Service", "[Callback] Capture key pressed");
                 Capture.SaveCapture(Worker.Config!.CaptureMode);
                 return 1;
             }

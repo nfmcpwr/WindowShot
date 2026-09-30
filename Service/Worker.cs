@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using WindowShot.Service.Interop;
 using WindowShot.Shared;
@@ -27,7 +28,7 @@ namespace WindowShot.Service
 
             if (Config == null)
             {
-                this._Logger.LogError("Failed to load config");
+                Log.Warning("Service", "Load default config");
 
                 Config = Config.DefaultConfig;
             }
@@ -35,6 +36,17 @@ namespace WindowShot.Service
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            if (1 < Process.GetProcessesByName("WindowShotService").Length)
+            {
+                Log.Error("Service", "Service already running");
+                Environment.Exit(0);
+            }
+
+            if (Process.GetProcessesByName("WSTray").Length == 0)
+            {
+                Process.Start(Path.Combine(Environment.CurrentDirectory, "WSTray.exe"));
+            }
+
             this._HookThread = new Thread(() =>
             {
                 try
@@ -43,6 +55,9 @@ namespace WindowShot.Service
                 }
                 catch (Win32Exception e)
                 {
+                    Log.Error("Service", e.Message);
+                    Log.Error("Service", e.StackTrace);
+
                     Environment.Exit(-1);
                 }
             })
@@ -76,7 +91,7 @@ namespace WindowShot.Service
                 throw new Win32Exception($"Hook create error: 0x{Kernel32.GetLastError():X8}");
             }
 
-            Console.WriteLine("[Hook] Hook created");
+            Log.Info("Service", "[Hook] Hook created");
 
             while (!token.IsCancellationRequested)
             {
@@ -94,7 +109,7 @@ namespace WindowShot.Service
                 throw new Win32Exception($"Hook remove error: 0x{Kernel32.GetLastError():X8}");
             }
 
-            Console.WriteLine("[Hook] Hook removed");
+            Log.Info("Service", "[Hook] Hook removed");
 
             Environment.Exit(0);
         }

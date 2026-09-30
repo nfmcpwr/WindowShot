@@ -15,7 +15,7 @@ namespace WindowShot.Service
                     NamedPipeServerStream server = new NamedPipeServerStream("WindowShot", PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
 
                     await server.WaitForConnectionAsync(token);
-                    Console.WriteLine("[IpcServer] Connected");
+                    Log.Info("Service", "[IpcServer] Connected");
                     while (server.IsConnected)
                     {
                         byte[] buffer = new byte[128];
@@ -26,7 +26,10 @@ namespace WindowShot.Service
                             break;
                         }
 
-                        switch (Encoding.UTF8.GetString(buffer, 0, count))
+                        string msg = Encoding.UTF8.GetString(buffer, 0, count);
+                        Log.Info("Service", $"[IpcServer] Message received: {msg}");
+
+                        switch (msg)
                         {
                             case "StopService":
                                 await Worker.TokenSource.CancelAsync();
@@ -44,10 +47,20 @@ namespace WindowShot.Service
                             case "SetScreenMode":
                                 Worker.Config!.CaptureMode = CaptureMode.Screen;
                                 break;
+
+                            case "ReloadConfig":
+                                Config? c = Config.Load(Path.Combine(Environment.CurrentDirectory, "Config.json"));
+                                if (c != null)
+                                {
+                                    Worker.Config = c;
+                                    Log.Info("Service", "Config updated");
+                                }
+
+                                break;
                         }
                     }
 
-                    Console.WriteLine("[IpcServer] Disconnected");
+                    Log.Info("Service", "[IpcServer] Disconnected");
                     server.Disconnect();
                     server.Close();
                     await server.DisposeAsync();
@@ -55,7 +68,7 @@ namespace WindowShot.Service
             }
             catch (OperationCanceledException)
             {
-                Console.WriteLine("[IpcServer] Cancel requested");
+                Log.Info("Service", "[IpcServer] Cancel requested");
             }
         }
     }

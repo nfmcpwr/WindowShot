@@ -10,6 +10,7 @@
     <AssemblyName>WindowShotService</AssemblyName>
     <AssemblyTitle>WindowShotService</AssemblyTitle>
     <RootNamespace>WindowShot.Service</RootNamespace>
+    <OutputType>WinExe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>

@@ -23,6 +23,8 @@ namespace WindowShot.Service
             this._KeyboardHookCallback = KeyboardCallback.KeyboardCallbackHandler;
             this._Server = new IpcServer();
 
+            Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
             TokenSource = new CancellationTokenSource();
             Config = Config.Load(Path.Combine(Environment.CurrentDirectory, "Config.json"));
 

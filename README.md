@@ -13,7 +13,7 @@ A Windows desktop screenshot utility with a background capture service and syste
 
 ## Requirements
 
-- Windows 10, build 17763 or later
+- Windows 10, build 19041 or later
 - .NET 9.0 Runtime
 - Windows App Runtime 2.5.1 or later
 
@@ -75,4 +75,4 @@ WindowShot uses the default settings when no configuration file exists.
 
 ## License
 
-WindowShot is licensed under the [GNU General Public License 3.0](https://github.com/nfmcpwr/WindowShot/blob/master/LICENSE)
+WindowShot is licensed under the [`GNU General Public License 3.0`](https://github.com/nfmcpwr/WindowShot/blob/master/LICENSE)

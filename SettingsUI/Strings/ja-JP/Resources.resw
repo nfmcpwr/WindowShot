@@ -126,12 +126,6 @@
   <data name="MethodText.Text" xml:space="preserve">
     <value>キャプチャ方法</value>
   </data>
-  <data name="MethodBitBlt.Content" xml:space="preserve">
-    <value>BitBlt</value>
-  </data>
-  <data name="MethodPrintWindow.Content" xml:space="preserve">
-    <value>PrintWindow</value>
-  </data>
   <data name="ModeScreen.Content" xml:space="preserve">
     <value>画面全体</value>
   </data>

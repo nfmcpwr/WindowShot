@@ -8,7 +8,7 @@ namespace WindowShot.Service
 {
     internal static partial class Capture
     {
-        public static bool SaveCapture(CaptureMode mode, CaptureMethod method)
+        public static async Task<bool> SaveCapture(CaptureMode mode, CaptureMethod method)
         {
             Log.Info("Service", $"[SaveCapture] Mode: {mode.ToString()}, Method: {method.ToString()}");
 
@@ -39,6 +39,10 @@ namespace WindowShot.Service
                         case CaptureMethod.PrintWindow:
                             result = PrintWindow(IntPtr.Zero, info.rcMonitor);
                             break;
+
+                        case CaptureMethod.DirectX:
+                            result = await WindowsGraphicsCapture(IntPtr.Zero, hmon);
+                            break;
                     }
 
                     break;
@@ -59,6 +63,10 @@ namespace WindowShot.Service
 
                         case CaptureMethod.PrintWindow:
                             result = PrintWindow(hwnd, rect);
+                            break;
+
+                        case CaptureMethod.DirectX:
+                            result = await WindowsGraphicsCapture(hwnd, IntPtr.Zero);
                             break;
                     }
 

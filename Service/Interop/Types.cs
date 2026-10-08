@@ -12,3 +12,4 @@ global using HDC = System.IntPtr;
 global using HBITMAP = System.IntPtr;
 global using HGDIOBJ = System.IntPtr;
 global using HMONITOR = System.IntPtr;
+global using HRESULT = int;

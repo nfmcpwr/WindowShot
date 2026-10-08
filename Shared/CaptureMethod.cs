@@ -4,5 +4,6 @@
     {
         BitBlt,
         PrintWindow,
+        DirectX,
     }
 }

@@ -34,7 +34,7 @@ namespace SettingsUI
             presenter.IsMaximizable = false;
 
             this.AppWindow.SetPresenter(presenter);
-            this.AppWindow.ResizeClient(new SizeInt32(720, 480));
+            this.AppWindow.ResizeClient(new SizeInt32(720, 445));
 
             this._ResourceLoader = new ResourceLoader();
 

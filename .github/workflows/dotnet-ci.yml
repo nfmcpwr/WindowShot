@@ -12,33 +12,10 @@ on:
 jobs:
   build:
 
-    runs-on: windows-2025-vs2026
+    runs-on: windows-2022
 
     steps:
     - uses: actions/checkout@v4
-    - name: Setup Windows SDK
-      shell: pwsh
-      run: |
-        $installer = "$env:RUNNER_TEMP\winsdksetup.exe"
-        $url = "https://go.microsoft.com/fwlink/?linkid=2311805"
-
-        Invoke-WebRequest -Uri $url -OutFile $installer
-
-        $process = Start-Process `
-          -FilePath $installer `
-          -ArgumentList @(
-            "/quiet",
-            "/norestart",
-            "/features",
-            "OptionId.WindowsDesktopDebuggers",
-            "OptionId.WindowsSoftwareDevelopmentKit"
-          ) `
-          -Wait `
-          -PassThru
-
-        if ($process.ExitCode -notin @(0, 3010)) {
-          throw "Windows SDK installer failed: $($process.ExitCode)"
-        }
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:

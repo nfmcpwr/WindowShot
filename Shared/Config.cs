@@ -5,6 +5,7 @@ namespace WindowShot.Shared
     public record class Config
     {
         public bool           Startup       { get; set; }
+        public bool           Admin         { get; set; }
         public CaptureMode    CaptureMode   { get; set; }
         public VirtualKeyCode WindowShotKey { get; set; }
         public VirtualKeyCode ScreenShotKey { get; set; }
@@ -32,6 +33,7 @@ namespace WindowShot.Shared
         public static readonly Config DefaultConfig = new Config
         {
             Startup = true,
+            Admin = false,
             CaptureMode = CaptureMode.Window,
             WindowShotKey = VirtualKeyCode.ImeConvert,
             ScreenShotKey = VirtualKeyCode.ImeConvert,

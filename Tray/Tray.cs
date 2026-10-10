@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using WindowShot.Resources;
 using WindowShot.Shared;
+using WindowShot.Tray.Interop;
 
 namespace WindowShot.Tray
 {
@@ -43,9 +44,11 @@ namespace WindowShot.Tray
             }
 
             Skip:
-
             this.captureMode.Enabled = IpcClient.IsServiceRunning();
-            this.statusText.Text = $"{Resource.StatusPrefix}: " + (IpcClient.IsServiceRunning() ? Resource.StatusRunning : Resource.StatusStopped);
+
+            this.statusText.Text = $"{Resource.StatusPrefix}: " +
+                                   (IpcClient.IsServiceRunning() ? Resource.StatusRunning : Resource.StatusStopped) +
+                                   (Shell32.IsUserAnAdmin() ? $" [{Resource.Admin}]" : "");
         }
 
 

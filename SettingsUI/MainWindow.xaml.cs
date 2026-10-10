@@ -1,9 +1,10 @@
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.Win32;
 using Microsoft.Windows.ApplicationModel.Resources;
+using SettingsUI.Interop;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
@@ -24,6 +25,7 @@ namespace SettingsUI
     {
         private Config?        _Config;
         private ResourceLoader _ResourceLoader;
+        private bool           _SkipEvent;
 
         public MainWindow()
         {
@@ -34,9 +36,15 @@ namespace SettingsUI
             presenter.IsMaximizable = false;
 
             this.AppWindow.SetPresenter(presenter);
-            this.AppWindow.ResizeClient(new SizeInt32(720, 445));
+            this.AppWindow.ResizeClient(new SizeInt32(720, 520));
 
             this._ResourceLoader = new ResourceLoader();
+            this._SkipEvent = false;
+
+            if (Shell32.IsUserAnAdmin())
+            {
+                this.Title += $" [{this._ResourceLoader.GetString("Admin")}]";
+            }
 
             this._Config = Config.Load(Config.ConfigPath);
             if (this._Config == null)
@@ -52,6 +60,8 @@ namespace SettingsUI
             }
 
             this.Startup.IsOn = this._Config.Startup;
+            this.Admin.IsEnabled = this.Startup.IsOn;
+            this.Admin.IsOn = this._Config.Admin;
             this.Mode.SelectedIndex = (int)this._Config.CaptureMode;
             this.ShortcutKey.SelectedItem = this._Config.WindowShotKey.ToString();
             this.Method.SelectedIndex = (int)this._Config.CaptureMethod;
@@ -60,6 +70,47 @@ namespace SettingsUI
         private void Startup_OnToggled(object sender, RoutedEventArgs e)
         {
             this._Config!.Startup = this.Startup.IsOn;
+            this.Admin.IsEnabled = this.Startup.IsOn;
+        }
+
+        private void Admin_OnToggled(object sender, RoutedEventArgs e)
+        {
+            if (!Shell32.IsUserAnAdmin())
+            {
+                if (this._SkipEvent)
+                {
+                    this._SkipEvent = false;
+                    return;
+                }
+
+                Process? p = null;
+                try
+                {
+                    p = Process.Start(new ProcessStartInfo
+                    {
+                        FileName = Path.Combine(Environment.CurrentDirectory, "WSSettingsUI.exe"),
+                        Verb = "RunAs",
+                        UseShellExecute = true,
+                    });
+                }
+                catch (Win32Exception)
+                {
+                }
+                finally
+                {
+                    if (p != null)
+                    {
+                        Close();
+                    }
+
+                    this._SkipEvent = true;
+                    this.Admin.IsOn = false;
+                }
+
+                return;
+            }
+
+            this._Config!.Admin = this.Admin.IsOn;
         }
 
         private void Mode_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -83,24 +134,18 @@ namespace SettingsUI
             this.Apply.IsEnabled = false;
             this._Config!.Save(Config.ConfigPath);
 
-            await UpdateSettings();
-
-            Close();
-        }
-
-        private async Task UpdateSettings()
-        {
-            RegistryKey runKey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true)!;
-            if (this._Config!.Startup)
+            try
             {
-                runKey.SetValue("WindowShotService", Path.Combine(Environment.CurrentDirectory, "WindowShotService.exe"), RegistryValueKind.String);
+                SettingsUI.Startup.Update(this.Startup.IsOn, this.Admin.IsOn && this.Admin.IsEnabled);
             }
-            else
+            catch (Exception exception)
             {
-                runKey.DeleteValue("WindowShotService", false);
+                Log.Error("SettingsUI", exception.ToString());
             }
 
             await ReloadConfig();
+
+            Close();
         }
 
         private async Task ReloadConfig()

@@ -61,6 +61,15 @@ namespace WindowShot.Resources {
         }
         
         /// <summary>
+        ///   Admin に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Admin {
+            get {
+                return ResourceManager.GetString("Admin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Service connection failed に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string ConnectionFailed {

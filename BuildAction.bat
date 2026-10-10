@@ -18,6 +18,8 @@ rmdir /S /Q %~dp0SettingsUI\bin
 rmdir /S /Q %~dp0Tray\bin
 rmdir /S /Q %~dp0Shared\bin
 rmdir /S /Q %~dp0Service\bin
+rmdir /S /Q %~dp0out\Debug
+rmdir /S /Q %~dp0out\Release
 exit /b
 
 :Build

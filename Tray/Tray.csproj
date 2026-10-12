@@ -9,7 +9,12 @@
     <AssemblyName>WSTray</AssemblyName>
     <AssemblyTitle>WSTray</AssemblyTitle>
     <RootNamespace>WindowShot.Tray</RootNamespace>
+    <ApplicationIcon>app.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="app.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj" />

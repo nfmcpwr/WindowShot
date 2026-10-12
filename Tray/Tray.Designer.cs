@@ -38,8 +38,8 @@ namespace WindowShot.Tray
             captureMode = new ToolStripMenuItem();
             modeWindow = new ToolStripMenuItem();
             modeScreen = new ToolStripMenuItem();
-            exitButton = new ToolStripMenuItem();
             openSettings = new ToolStripMenuItem();
+            exitButton = new ToolStripMenuItem();
             trayMenu.SuspendLayout();
             SuspendLayout();
             // 
@@ -57,13 +57,13 @@ namespace WindowShot.Tray
             trayMenu.ImageScalingSize = new Size(24, 24);
             trayMenu.Items.AddRange(new ToolStripItem[] { statusText, captureMode, openSettings, exitButton });
             trayMenu.Name = "contextMenuStrip1";
-            trayMenu.Size = new Size(241, 165);
+            trayMenu.Size = new Size(149, 132);
             // 
             // statusText
             // 
             statusText.Enabled = false;
             statusText.Name = "statusText";
-            statusText.Size = new Size(240, 32);
+            statusText.Size = new Size(148, 32);
             statusText.Text = "Status: ";
             // 
             // captureMode
@@ -71,7 +71,7 @@ namespace WindowShot.Tray
             captureMode.DropDownItems.AddRange(new ToolStripItem[] { modeWindow, modeScreen });
             captureMode.Enabled = false;
             captureMode.Name = "captureMode";
-            captureMode.Size = new Size(240, 32);
+            captureMode.Size = new Size(148, 32);
             captureMode.Text = Resource.ModeText;
             // 
             // modeWindow
@@ -88,19 +88,19 @@ namespace WindowShot.Tray
             modeScreen.Text = Resource.ScreenText;
             modeScreen.Click += modeScreen_Click;
             // 
-            // exitButton
-            // 
-            exitButton.Name = "exitButton";
-            exitButton.Size = new Size(240, 32);
-            exitButton.Text = Resource.ExitText;
-            exitButton.Click += exitButton_Click;
-            // 
             // openSettings
             // 
             openSettings.Name = "openSettings";
-            openSettings.Size = new Size(240, 32);
+            openSettings.Size = new Size(148, 32);
             openSettings.Text = Resource.SettingsText;
             openSettings.Click += openSettings_Click;
+            // 
+            // exitButton
+            // 
+            exitButton.Name = "exitButton";
+            exitButton.Size = new Size(148, 32);
+            exitButton.Text = Resource.ExitText;
+            exitButton.Click += exitButton_Click;
             // 
             // Tray
             // 
@@ -108,6 +108,7 @@ namespace WindowShot.Tray
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Tray";
             ShowInTaskbar = false;
             Text = "WindowShot Tray";

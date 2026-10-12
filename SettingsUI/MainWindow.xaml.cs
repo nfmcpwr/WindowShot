@@ -104,7 +104,7 @@ namespace SettingsUI
                     }
 
                     this._SkipEvent = true;
-                    this.Admin.IsOn = false;
+                    this.Admin.IsOn = this._Config!.Admin;
                 }
 
                 return;

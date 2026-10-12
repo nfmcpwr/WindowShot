@@ -46,6 +46,9 @@ namespace WindowShot.Tray
             Skip:
             this.captureMode.Enabled = IpcClient.IsServiceRunning();
 
+            this.trayIcon.Text = "WindowShot" +
+                                 (Shell32.IsUserAnAdmin() ? $" [{Resource.Admin}]" : "");
+
             this.statusText.Text = $"{Resource.StatusPrefix}: " +
                                    (IpcClient.IsServiceRunning() ? Resource.StatusRunning : Resource.StatusStopped) +
                                    (Shell32.IsUserAnAdmin() ? $" [{Resource.Admin}]" : "");

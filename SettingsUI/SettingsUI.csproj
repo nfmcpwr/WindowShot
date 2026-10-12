@@ -12,6 +12,9 @@
     <EnableMsixTooling>false</EnableMsixTooling>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="app.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
@@ -56,5 +59,6 @@
     <AssemblyTitle>WSSettingsUI</AssemblyTitle>
 	<SelfContained>false</SelfContained>
 	<DefaultLanguage>en-US</DefaultLanguage>
+	<ApplicationIcon>app.ico</ApplicationIcon>
   </PropertyGroup>
 </Project>

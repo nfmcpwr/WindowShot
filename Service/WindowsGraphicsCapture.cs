@@ -23,7 +23,7 @@ namespace WindowShot.Service
         {
             if (!GraphicsCaptureSession.IsSupported())
             {
-                Log.Error("Service", "Windows.Graphics.Capture API not supported");
+                Log.Error("Service", "API not supported");
                 return null;
             }
 
@@ -84,9 +84,15 @@ namespace WindowShot.Service
                 {
                     session.StartCapture();
                     Direct3D11CaptureFrame frame = await firstFrame.Task;
+
                     try
                     {
-                        return CopyFrameToBitmap(frame, d3dDevice, d3dContext);
+                        if (window != IntPtr.Zero && User32.GetClientRect(window, out RECT clientRect))
+                        {
+                            return CopyFrameToBitmap(frame, d3dDevice, d3dContext, clientRect);
+                        }
+
+                        return CopyFrameToBitmap(frame, d3dDevice, d3dContext, null);
                     }
                     finally
                     {
@@ -142,7 +148,8 @@ namespace WindowShot.Service
         private static Bitmap? CopyFrameToBitmap(
             Direct3D11CaptureFrame frame,
             ID3D11Device           device,
-            ID3D11DeviceContext    context)
+            ID3D11DeviceContext    context,
+            RECT?                  clientRect)
         {
             SizeInt32 size = frame.ContentSize;
             if (size.Width <= 0 || size.Height <= 0)
@@ -189,7 +196,7 @@ namespace WindowShot.Service
 
             try
             {
-                return CopyMappedPixelsToBitmap(mapped, size);
+                return CopyMappedPixelsToBitmap(mapped, size, clientRect);
             }
             finally
             {
@@ -219,24 +226,42 @@ namespace WindowShot.Service
             }
         }
 
-        private static Bitmap? CopyMappedPixelsToBitmap(MappedSubresource mapped, SizeInt32 size)
+        private static Bitmap? CopyMappedPixelsToBitmap(MappedSubresource mapped, SizeInt32 size, RECT? clientRect)
         {
             const int bytesPerPixel = 4;
             int sourceRowBytes = checked(size.Width * bytesPerPixel);
             byte[] row = GC.AllocateUninitializedArray<byte>(sourceRowBytes);
-            Bitmap bitmap = new Bitmap(size.Width, size.Height, PixelFormat.Format32bppArgb);
+
+            Bitmap bitmap;
+            if (clientRect != null)
+            {
+                bitmap = new Bitmap(clientRect.Value.right, clientRect.Value.bottom, PixelFormat.Format32bppArgb);
+            }
+            else
+            {
+                bitmap = new Bitmap(size.Width, size.Height, PixelFormat.Format32bppArgb);
+            }
+
             BitmapData? bitmapData = null;
+
+            int padding = 0;
+            int rowCount = size.Height;
+            if (clientRect != null)
+            {
+                padding = size.Height - clientRect.Value.bottom;
+                rowCount = clientRect.Value.bottom;
+            }
 
             try
             {
                 bitmapData = bitmap.LockBits(
-                    new Rectangle(0, 0, size.Width, size.Height),
+                    new Rectangle(0, 0, bitmap.Width, bitmap.Height),
                     ImageLockMode.WriteOnly,
                     PixelFormat.Format32bppArgb);
 
-                for (int y = 0; y < size.Height; y++)
+                for (int y = 0; y < rowCount; y++)
                 {
-                    IntPtr sourceRow = IntPtr.Add(mapped.DataPointer, checked(y * (int)mapped.RowPitch));
+                    IntPtr sourceRow = IntPtr.Add(mapped.DataPointer, checked((y + padding) * (int)mapped.RowPitch));
                     IntPtr destinationRow = IntPtr.Add(bitmapData.Scan0, checked(y * bitmapData.Stride));
 
                     Marshal.Copy(sourceRow, row, 0, sourceRowBytes);
@@ -247,7 +272,7 @@ namespace WindowShot.Service
             }
             catch (Exception e)
             {
-                Log.Error("Service", $"[CopyMappedPixelsToBitmap] {e.Message}");
+                Log.Error("Service", $"[CopyMappedPixelsToBitmap] {e.ToString()}");
                 bitmap.Dispose();
 
                 return null;

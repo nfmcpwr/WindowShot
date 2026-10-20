@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
 using System.IO.Pipes;
+using System.Runtime.InteropServices;
 using System.Text;
 using WindowShot.Shared;
+using WindowShot.Tray.Interop;
 
 namespace WindowShot.Tray
 {
@@ -115,6 +117,69 @@ namespace WindowShot.Tray
                 client.Close();
                 await client.DisposeAsync();
             }
+        }
+
+        public static Process? GetServiceProcess()
+        {
+            if (!IsServiceRunning())
+            {
+                return null;
+            }
+
+            return Process.GetProcessesByName("WindowShotService").FirstOrDefault();
+        }
+
+        public static bool IsServiceElevated()
+        {
+            if (!IsServiceRunning())
+            {
+                return false;
+            }
+
+            Process? sProcess = GetServiceProcess();
+            if (sProcess == null)
+            {
+                return false;
+            }
+
+            HANDLE hProcess = Kernel32.OpenProcess(
+                Consts.PROCESS_QUERY_LIMITED_INFORMATION,
+                false,
+                (DWORD)sProcess.Id);
+
+            if (hProcess == IntPtr.Zero)
+            {
+                Log.Error("Tray", $"OpenProcess error: 0x{Kernel32.GetLastError():X8}");
+
+                return false;
+            }
+
+            if (!Advapi32.OpenProcessToken(hProcess, 0x0008, out HANDLE hToken))
+            {
+                Log.Error("Tray", $"OpenProcessToken error: 0x{Kernel32.GetLastError():X8}");
+
+                Kernel32.CloseHandle(hProcess);
+                return false;
+            }
+
+            if (!Advapi32.GetTokenInformation(
+                    hToken,
+                    TOKEN_INFORMATION_CLASS.TokenElevation,
+                    out IntPtr tokenElevation,
+                    (DWORD)Marshal.SizeOf<TOKEN_ELEVATION>(),
+                    out DWORD returnLength))
+            {
+                Log.Error("Tray", $"GetTokenInformation error: 0x{Kernel32.GetLastError():X8}");
+
+                Kernel32.CloseHandle(hToken);
+                Kernel32.CloseHandle(hProcess);
+                return false;
+            }
+
+            Kernel32.CloseHandle(hToken);
+            Kernel32.CloseHandle(hProcess);
+
+            return tokenElevation.ToInt32() != 0;
         }
     }
 }

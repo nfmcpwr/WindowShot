@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using WindowShot.Resources;
 using WindowShot.Shared;
-using WindowShot.Tray.Interop;
 
 namespace WindowShot.Tray
 {
@@ -18,10 +17,19 @@ namespace WindowShot.Tray
 
         private async Task CheckStatus()
         {
+            this.trayIcon.Text = "WindowShot";
+            this.statusText.Text = $"{Resource.StatusPrefix}: ";
+
             if (!IpcClient.IsServiceRunning())
             {
-                goto Skip;
+                this.captureMode.Enabled = false;
+                this.statusText.Text += Resource.StatusStopped;
+
+                return;
             }
+
+            this.captureMode.Enabled = true;
+            this.statusText.Text += Resource.StatusRunning;
 
             try
             {
@@ -43,15 +51,11 @@ namespace WindowShot.Tray
                     break;
             }
 
-            Skip:
-            this.captureMode.Enabled = IpcClient.IsServiceRunning();
-
-            this.trayIcon.Text = "WindowShot" +
-                                 (Shell32.IsUserAnAdmin() ? $" [{Resource.Admin}]" : "");
-
-            this.statusText.Text = $"{Resource.StatusPrefix}: " +
-                                   (IpcClient.IsServiceRunning() ? Resource.StatusRunning : Resource.StatusStopped) +
-                                   (Shell32.IsUserAnAdmin() ? $" [{Resource.Admin}]" : "");
+            if (IpcClient.IsServiceElevated())
+            {
+                this.trayIcon.Text += $" [{Resource.Admin}]";
+                this.statusText.Text += $" [{Resource.Admin}]";
+            }
         }
 
 
@@ -114,7 +118,7 @@ namespace WindowShot.Tray
 
         private async void trayIcon_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && this._Mode == null)
+            if (e.Button == MouseButtons.Right)
             {
                 try
                 {

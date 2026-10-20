@@ -31,7 +31,7 @@ namespace SettingsUI
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             this._window = new MainWindow();
-            this._window.AppWindow.SetIcon("app.ico");
+            this._window.AppWindow.SetIcon("./Assets/app.ico");
             this._window.Activate();
         }
     }

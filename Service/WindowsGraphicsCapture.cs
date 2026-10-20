@@ -230,6 +230,11 @@ namespace WindowShot.Service
         {
             const int bytesPerPixel = 4;
             int sourceRowBytes = checked(size.Width * bytesPerPixel);
+            if (clientRect != null)
+            {
+                sourceRowBytes = checked(clientRect.Value.right * bytesPerPixel);
+            }
+
             byte[] row = GC.AllocateUninitializedArray<byte>(sourceRowBytes);
 
             Bitmap bitmap;

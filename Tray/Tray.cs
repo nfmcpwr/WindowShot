@@ -4,7 +4,7 @@ using WindowShot.Shared;
 
 namespace WindowShot.Tray
 {
-    public partial class Tray : Form
+    public partial class Tray : ApplicationContext
     {
         private CaptureMode? _Mode;
 
@@ -13,23 +13,25 @@ namespace WindowShot.Tray
             InitializeComponent();
 
             this._Mode = null;
+
+            CheckStatus();
         }
 
         private async Task CheckStatus()
         {
-            this.trayIcon.Text = "WindowShot";
-            this.statusText.Text = $"{Resource.StatusPrefix}: ";
+            this.trayIcon!.Text = "WindowShot";
+            this.statusText!.Text = $"{Resource.StatusPrefix}: ";
 
             if (!IpcClient.IsServiceRunning())
             {
-                this.captureMode.Enabled = false;
-                this.statusText.Text += Resource.StatusStopped;
+                this.captureMode!.Enabled = false;
+                this.statusText!.Text += Resource.StatusStopped;
 
                 return;
             }
 
-            this.captureMode.Enabled = true;
-            this.statusText.Text += Resource.StatusRunning;
+            this.captureMode!.Enabled = true;
+            this.statusText!.Text += Resource.StatusRunning;
 
             try
             {
@@ -43,28 +45,28 @@ namespace WindowShot.Tray
             switch (this._Mode)
             {
                 case CaptureMode.Screen:
-                    this.modeScreen.Checked = true;
+                    this.modeScreen!.Checked = true;
                     break;
 
                 case CaptureMode.Window:
-                    this.modeWindow.Checked = true;
+                    this.modeWindow!.Checked = true;
                     break;
             }
 
             if (IpcClient.IsServiceElevated())
             {
-                this.trayIcon.Text += $" [{Resource.Admin}]";
-                this.statusText.Text += $" [{Resource.Admin}]";
+                this.trayIcon!.Text += $" [{Resource.Admin}]";
+                this.statusText!.Text += $" [{Resource.Admin}]";
             }
         }
 
 
-        private async void modeWindow_Click(object sender, EventArgs e)
+        private async void modeWindow_Click(object? sender, EventArgs e)
         {
-            if (this.modeScreen.Checked)
+            if (this.modeScreen!.Checked)
             {
-                this.modeScreen.Checked = false;
-                this.modeWindow.Checked = true;
+                this.modeScreen!.Checked = false;
+                this.modeWindow!.Checked = true;
 
                 this._Mode = CaptureMode.Window;
 
@@ -79,12 +81,12 @@ namespace WindowShot.Tray
             }
         }
 
-        private async void modeScreen_Click(object sender, EventArgs e)
+        private async void modeScreen_Click(object? sender, EventArgs e)
         {
-            if (this.modeWindow.Checked)
+            if (this.modeWindow!.Checked)
             {
-                this.modeWindow.Checked = false;
-                this.modeScreen.Checked = true;
+                this.modeWindow!.Checked = false;
+                this.modeScreen!.Checked = true;
 
                 this._Mode = CaptureMode.Screen;
 
@@ -99,7 +101,7 @@ namespace WindowShot.Tray
             }
         }
 
-        private async void exitButton_Click(object sender, EventArgs e)
+        private async void exitButton_Click(object? sender, EventArgs e)
         {
             if (IpcClient.IsServiceRunning())
             {
@@ -113,10 +115,10 @@ namespace WindowShot.Tray
                 }
             }
 
-            Close();
+            ExitThread();
         }
 
-        private async void trayIcon_MouseClick(object sender, MouseEventArgs e)
+        private async void trayIcon_MouseClick(object? sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
@@ -131,7 +133,7 @@ namespace WindowShot.Tray
             }
         }
 
-        private void openSettings_Click(object sender, EventArgs e)
+        private void openSettings_Click(object? sender, EventArgs e)
         {
             try
             {

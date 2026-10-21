@@ -19,7 +19,7 @@ namespace WindowShot.Shared
             {
                 return JsonConvert.DeserializeObject<Config>(File.ReadAllText(path));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

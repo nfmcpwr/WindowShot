@@ -1,4 +1,6 @@
 ﻿using System.IO.Pipes;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Text;
 using WindowShot.Shared;
 
@@ -8,11 +10,25 @@ namespace WindowShot.Service
     {
         public async Task Run(CancellationToken token)
         {
+            PipeSecurity sec = new PipeSecurity();
+            sec.AddAccessRule(new PipeAccessRule(
+                new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null),
+                PipeAccessRights.ReadWrite,
+                AccessControlType.Allow));
+
             try
             {
                 while (!token.IsCancellationRequested)
                 {
-                    NamedPipeServerStream server = new NamedPipeServerStream("WindowShot", PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
+                    NamedPipeServerStream server = NamedPipeServerStreamAcl.Create(
+                        "WindowShot",
+                        PipeDirection.InOut,
+                        1,
+                        PipeTransmissionMode.Byte,
+                        PipeOptions.Asynchronous,
+                        0,
+                        0,
+                        sec);
 
                     await server.WaitForConnectionAsync(token);
                     Log.Info("Service", "[IpcServer] Connected");

@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Graphics;
 using WindowShot.Shared;
+using WinRT.Interop;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -31,12 +32,15 @@ namespace SettingsUI
         {
             InitializeComponent();
 
+            double scale = User32.GetDpiForWindow(WindowNative.GetWindowHandle(this)) / 96.0;
+
             OverlappedPresenter presenter = OverlappedPresenter.Create();
-            presenter.IsResizable = false;
             presenter.IsMaximizable = false;
+            presenter.PreferredMinimumWidth = (int)(350 * scale);
+            presenter.PreferredMinimumHeight = (int)(170 * scale);
 
             this.AppWindow.SetPresenter(presenter);
-            this.AppWindow.ResizeClient(new SizeInt32(720, 520));
+            this.AppWindow.ResizeClient(new SizeInt32((int)(360 * scale), (int)(380 * scale)));
 
             this._ResourceLoader = new ResourceLoader();
             this._SkipEvent = false;

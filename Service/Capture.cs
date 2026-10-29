@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using Microsoft.Windows.AppNotifications;
+using Microsoft.Windows.AppNotifications.Builder;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using WindowShot.Service.Interop;
@@ -83,12 +85,22 @@ namespace WindowShot.Service
                 Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "WindowShot"));
             }
 
+            string fileName = $"{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.png";
             result.Save(
                 Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
                     "WindowShot",
-                    $"{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.png"),
+                    fileName),
                 ImageFormat.Png);
+
+            AppNotificationManager manager = AppNotificationManager.Default;
+            manager.Register();
+            manager.Show(new AppNotificationBuilder()
+                .AddText("WindowShot")
+                .AddText($"{fileName}")
+                .BuildNotification());
+            await Task.Delay(100);
+            manager.Unregister();
 
             return true;
         }

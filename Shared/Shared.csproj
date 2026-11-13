@@ -5,7 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>WindowShot.Shared</AssemblyName>
-    <AssemblyTitle>WindowShot.Shared</AssemblyTitle>
+	<AssemblyTitle>WindowShot Shared Library</AssemblyTitle>
+	<Product>WindowShot</Product>
     <RootNamespace>WindowShot.Shared</RootNamespace>
   </PropertyGroup>
 

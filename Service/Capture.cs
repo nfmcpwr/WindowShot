@@ -1,6 +1,4 @@
-﻿using Microsoft.Windows.AppNotifications;
-using Microsoft.Windows.AppNotifications.Builder;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using WindowShot.Service.Interop;
@@ -93,14 +91,7 @@ namespace WindowShot.Service
                     fileName),
                 ImageFormat.Png);
 
-            AppNotificationManager manager = AppNotificationManager.Default;
-            manager.Register();
-            manager.Show(new AppNotificationBuilder()
-                .AddText("WindowShot")
-                .AddText($"{fileName}")
-                .BuildNotification());
-            await Task.Delay(100);
-            manager.Unregister();
+            await Notification.Send(fileName);
 
             return true;
         }

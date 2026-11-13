@@ -108,6 +108,7 @@ namespace WindowShot.Tray
                 try
                 {
                     await IpcClient.StopService();
+                    await IpcClient.StopNotifier();
                 }
                 catch (Exception ex)
                 {

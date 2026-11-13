@@ -181,5 +181,45 @@ namespace WindowShot.Tray
 
             return tokenElevation.ToInt32() != 0;
         }
+
+        public static async Task StopNotifier()
+        {
+            NamedPipeClientStream client = new NamedPipeClientStream("WSNotifier");
+
+            try
+            {
+                if (!IsNotifierRunning())
+                {
+                    return;
+                }
+
+                await client.ConnectAsync(5000);
+
+                if (client.IsConnected)
+                {
+                    byte[] wbuf = Encoding.UTF8.GetBytes("Exit");
+                    await client.WriteAsync(wbuf, 0, wbuf.Length);
+                }
+                else
+                {
+                    Log.Error("Tray", "Failed to connect to Notifier");
+                }
+            }
+            finally
+            {
+                client.Close();
+                await client.DisposeAsync();
+            }
+        }
+
+        public static bool IsNotifierRunning()
+        {
+            if (Process.GetProcessesByName("WSNotifier").Length == 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

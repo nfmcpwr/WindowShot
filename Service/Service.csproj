@@ -8,7 +8,8 @@
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AssemblyName>WindowShotService</AssemblyName>
-    <AssemblyTitle>WindowShotService</AssemblyTitle>
+	<AssemblyTitle>WindowShot Service</AssemblyTitle>
+	<Product>WindowShot</Product>
     <RootNamespace>WindowShot.Service</RootNamespace>
     <OutputType>WinExe</OutputType>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
@@ -23,8 +24,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.20" />
     <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="2.5.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="2.3.9" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.22" />
     <PackageReference Include="Vortice.Direct3D11" Version="3.8.3" />
   </ItemGroup>

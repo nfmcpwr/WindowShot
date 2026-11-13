@@ -53,7 +53,8 @@
     <PublishTrimmed>False</PublishTrimmed>
     <WindowsPackageType>None</WindowsPackageType>
     <AssemblyName>WSSettingsUI</AssemblyName>
-    <AssemblyTitle>WSSettingsUI</AssemblyTitle>
+	<AssemblyTitle>WindowShot Settings UI</AssemblyTitle>
+	<Product>WindowShot</Product>
 	<SelfContained>false</SelfContained>
 	<DefaultLanguage>en-US</DefaultLanguage>
 	<ApplicationIcon>./Assets/app.ico</ApplicationIcon>

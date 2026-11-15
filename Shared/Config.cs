@@ -32,7 +32,7 @@ namespace WindowShot.Shared
 
         public static readonly Config DefaultConfig = new Config
         {
-            Startup = true,
+            Startup = false,
             Admin = false,
             CaptureMode = CaptureMode.Window,
             WindowShotKey = VirtualKeyCode.ImeConvert,

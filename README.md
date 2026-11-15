@@ -56,7 +56,7 @@ WindowShot uses the default settings when no configuration file exists.
 
 <details><summary>Default config values</summary>
   
-- `Startup`: `On`
+- `Startup`: `Off`
 - `Shortcut key`: `IMEConvert`
 - `Mode`: `Window`
 - `Capture method`: `Bitblt`

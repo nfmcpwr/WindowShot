@@ -4,7 +4,9 @@ namespace WindowShot.Service.Interop
 {
     internal class Kernel32
     {
-        [DllImport("kernel32.dll")]
-        public static extern DWORD GetLastError();
+        public static int GetLastError()
+        {
+            return Marshal.GetLastWin32Error();
+        }
     }
 }

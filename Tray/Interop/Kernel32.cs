@@ -14,7 +14,9 @@ namespace WindowShot.Tray.Interop
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool CloseHandle(HANDLE hObject);
 
-        [DllImport("kernel32.dll")]
-        public static extern uint GetLastError();
+        public static int GetLastError()
+        {
+            return Marshal.GetLastWin32Error();
+        }
     }
 }
